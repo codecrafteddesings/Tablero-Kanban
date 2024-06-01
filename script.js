@@ -21,57 +21,43 @@ document.addEventListener('DOMContentLoaded', () => {
         onEnd: saveState
     });
 
-    loadState(); // Cargar el estado inicial desde el almacenamiento local
+    loadState();
 });
 
-function loadState() {
-    const state = JSON.parse(localStorage.getItem('taskState'));
+function addTask(columnId) {
+    const taskText = prompt('Enter task:');
+    if (taskText === null || taskText.trim() === '') return;
 
-    if (state) {
-        const todoList = document.querySelector('#todo .task-list');
-        const inProgressList = document.querySelector('#inProgress .task-list');
-        const doneList = document.querySelector('#done .task-list');
+    const task = document.createElement('div');
+    task.className = 'task';
+    task.textContent = taskText;
 
-        todoList.innerHTML = '';
-        inProgressList.innerHTML = '';
-        doneList.innerHTML = '';
-
-        state.todo.forEach(taskText => {
-            const task = document.createElement('li');
-            task.textContent = taskText;
-            task.className = 'task';
-            todoList.appendChild(task);
-        });
-
-        state.inProgress.forEach(taskText => {
-            const task = document.createElement('li');
-            task.textContent = taskText;
-            task.className = 'task';
-            inProgressList.appendChild(task);
-        });
-
-        state.done.forEach(taskText => {
-            const task = document.createElement('li');
-            task.textContent = taskText;
-            task.className = 'task';
-            doneList.appendChild(task);
-        });
-        
-        // Guardar el estado inicial del tablero Kanban en el almacenamiento local
-        localStorage.setItem('taskState', JSON.stringify(state));
-    }
+    document.querySelector(`#${columnId} .task-list`).appendChild(task);
+    saveState();
 }
 
 function saveState() {
-    const todoList = document.querySelector('#todo .task-list');
-    const inProgressList = document.querySelector('#inProgress .task-list');
-    const doneList = document.querySelector('#done .task-list');
+    const columns = ['todo', 'inProgress', 'done'];
+    const state = columns.reduce((acc, column) => {
+        acc[column] = Array.from(document.querySelectorAll(`#${column} .task`)).map(task => task.textContent);
+        return acc;
+    }, {});
 
-    const state = {
-        todo: Array.from(todoList.children).map(task => task.textContent),
-        inProgress: Array.from(inProgressList.children).map(task => task.textContent),
-        done: Array.from(doneList.children).map(task => task.textContent)
-    };
+    localStorage.setItem('kanbanState', JSON.stringify(state));
+}
 
-    localStorage.setItem('taskState', JSON.stringify(state));
+function loadState() {
+    const state = JSON.parse(localStorage.getItem('kanbanState'));
+    if (!state) return;
+
+    Object.keys(state).forEach(column => {
+        const columnElement = document.querySelector(`#${column} .task-list`);
+        columnElement.innerHTML = '';
+        state[column].forEach(taskText => {
+            const task = document.createElement('div');
+            task.className = 'task';
+            task.textContent = taskText;
+            columnElement.appendChild(task);
+        });
+    });
 }
