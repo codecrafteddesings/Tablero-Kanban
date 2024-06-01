@@ -47,7 +47,19 @@ function createTaskElement(taskText) {
         saveState();
     };
 
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = 'Ed';
+    editBtn.onclick = function () {
+        const newTaskText = prompt('Edit task:', taskText);
+        if (newTaskText !== null && newTaskText.trim() !== '') {
+            this.parentElement.childNodes[0].textContent = newTaskText;
+            saveState();
+        }
+    };
+
     task.appendChild(deleteBtn);
+    task.appendChild(editBtn);
     return task;
 }
 

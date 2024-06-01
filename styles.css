@@ -28,13 +28,7 @@ body {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.task {
-    padding: 10px;
-    background: #e0e0e0;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    cursor: grab;
-}
+
 .task {
     position: relative;
     padding: 10px;
@@ -44,8 +38,9 @@ body {
     cursor: grab;
 }
 
-.delete-btn {
+.delete-btn, .edit-btn {
     position: absolute;
+    
     top: 5px;
     right: 5px;
     background: red;
@@ -55,4 +50,8 @@ body {
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+.edit-btn {
+    right: 30px;
+    background: blue;
 }
