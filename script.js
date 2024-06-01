@@ -49,7 +49,7 @@ function createTaskElement(taskText) {
 
     const editBtn = document.createElement('button');
     editBtn.className = 'edit-btn';
-    editBtn.textContent = 'Ed';
+    editBtn.textContent = 'Edi';
     editBtn.onclick = function () {
         const newTaskText = prompt('Edit task:', taskText);
         if (newTaskText !== null && newTaskText.trim() !== '') {
