@@ -35,3 +35,24 @@ body {
     margin-bottom: 10px;
     cursor: grab;
 }
+.task {
+    position: relative;
+    padding: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: grab;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

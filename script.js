@@ -28,18 +28,33 @@ function addTask(columnId) {
     const taskText = prompt('Enter task:');
     if (taskText === null || taskText.trim() === '') return;
 
-    const task = document.createElement('div');
-    task.className = 'task';
-    task.textContent = taskText;
+    const task = createTaskElement(taskText);
 
     document.querySelector(`#${columnId} .task-list`).appendChild(task);
     saveState();
 }
 
+function createTaskElement(taskText) {
+    const task = document.createElement('div');
+    task.className = 'task';
+    task.textContent = taskText;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = 'X';
+    deleteBtn.onclick = function () {
+        this.parentElement.remove();
+        saveState();
+    };
+
+    task.appendChild(deleteBtn);
+    return task;
+}
+
 function saveState() {
     const columns = ['todo', 'inProgress', 'done'];
     const state = columns.reduce((acc, column) => {
-        acc[column] = Array.from(document.querySelectorAll(`#${column} .task`)).map(task => task.textContent);
+        acc[column] = Array.from(document.querySelectorAll(`#${column} .task`)).map(task => task.childNodes[0].textContent);
         return acc;
     }, {});
 
@@ -54,9 +69,7 @@ function loadState() {
         const columnElement = document.querySelector(`#${column} .task-list`);
         columnElement.innerHTML = '';
         state[column].forEach(taskText => {
-            const task = document.createElement('div');
-            task.className = 'task';
-            task.textContent = taskText;
+            const task = createTaskElement(taskText);
             columnElement.appendChild(task);
         });
     });
